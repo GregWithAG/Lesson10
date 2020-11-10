@@ -1,7 +1,5 @@
 package Searching;
 
-import Sorting.*;
-
 public class ISSStudents implements Comparable{
     private String name, address;
     private int ID;
@@ -16,8 +14,8 @@ public class ISSStudents implements Comparable{
         return ID;
     }
     
-    public String ToString(){
-        return "Name: \t\t" + name + "\nAddress: \t" + address + "\nID: \t\t" + ID;
+    public String toString(){
+        return "Name: \t\t" + name + "\n Address: \t" + address + "\n ID: \t\t" + ID;
     }
 
     

@@ -7,6 +7,7 @@ package InsertRemove;
 
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,7 +21,7 @@ public class PeopleList extends javax.swing.JFrame {
     public PeopleList() {
         initComponents();
         people.add(new Person("Bob",25,"M"));
-        people.add(new Person("Fran",55,"O"));
+        people.add(new Person("Fran",55,"F"));
         people.add(new Person("Mark",15,"M"));
         people.add(new Person("Sue",30,"F"));
         PeopleLST.setModel(list);
@@ -129,8 +130,10 @@ public class PeopleList extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        buttonGroup1.add(MaleRB);
         MaleRB.setText("Male");
 
+        buttonGroup1.add(FemaleRB);
         FemaleRB.setText("Female");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -192,6 +195,11 @@ public class PeopleList extends javax.swing.JFrame {
 
         DeleteMNU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/InsertRemove/delete.png"))); // NOI18N
         DeleteMNU.setText("Delete");
+        DeleteMNU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteMNUActionPerformed(evt);
+            }
+        });
         jMenu3.add(DeleteMNU);
 
         jMenuBar1.add(jMenu3);
@@ -200,14 +208,29 @@ public class PeopleList extends javax.swing.JFrame {
 
         AllMNU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/InsertRemove/all.png"))); // NOI18N
         AllMNU.setText("Show All");
+        AllMNU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AllMNUActionPerformed(evt);
+            }
+        });
         jMenu4.add(AllMNU);
 
         MalesMNU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/InsertRemove/male.png"))); // NOI18N
         MalesMNU.setText("Males");
+        MalesMNU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MalesMNUActionPerformed(evt);
+            }
+        });
         jMenu4.add(MalesMNU);
 
         FemalesMnu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/InsertRemove/female.png"))); // NOI18N
         FemalesMnu.setText("Females");
+        FemalesMnu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FemalesMnuActionPerformed(evt);
+            }
+        });
         jMenu4.add(FemalesMnu);
 
         jMenuBar1.add(jMenu4);
@@ -274,10 +297,67 @@ public class PeopleList extends javax.swing.JFrame {
         String Name = TXTName.getText();
         int Age = Integer.parseInt(TXTAge.getText());
         String Gender = buttonGroup1.getSelection().getActionCommand();
-        int loc = findInsertPoint(people,Name);
-        people.add(loc,(new Person(Name,Age,Gender)));
-        show(people.get(loc));
+        Person p = new Person(Name,Age,Gender);
+        int Result= search(people,p);
+        System.out.println(Result);
+        if (Result !=-1) {
+            JOptionPane.showMessageDialog(this, "That is not a usable person, please try again");
+        }
+        else{
+            int loc = findInsertPoint(people,p);
+            people.add(loc,p);
+            list.removeAllElements();
+            for (Person t:people) {
+                list.addElement(t.getName());
+            }
+        }
+        
     }//GEN-LAST:event_AddMNUActionPerformed
+
+    private void AllMNUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AllMNUActionPerformed
+        list.removeAllElements();
+        for(Person t:people){
+            list.addElement(t.getName());
+        }
+    }//GEN-LAST:event_AllMNUActionPerformed
+
+    private void MalesMNUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MalesMNUActionPerformed
+        list.removeAllElements();
+        for(Person t:people){
+            if (t.getGender()=="M" ||t.getGender()=="m") {
+                list.addElement(t.getName());
+            }
+            
+        }
+    }//GEN-LAST:event_MalesMNUActionPerformed
+
+    private void FemalesMnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FemalesMnuActionPerformed
+        list.removeAllElements();
+        for(Person t:people){
+            if (t.getGender()=="F" ||t.getGender()=="f") {
+                list.addElement(t.getName());
+            }
+            
+        }
+    }//GEN-LAST:event_FemalesMnuActionPerformed
+
+    private void DeleteMNUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteMNUActionPerformed
+        String name = "" + PeopleLST.getSelectedValue();
+        int loc = search(people,new Person(name,0,""));
+        people.remove(loc);
+        list.removeElementAt(PeopleLST.getSelectedIndex());
+        try{
+        try{
+            show(people.get(loc));
+            PeopleLST.setSelectedIndex(loc);
+        }catch(Exception e){
+            show(people.get(loc));
+            PeopleLST.setSelectedIndex(loc);
+        }
+        }catch(Exception e){
+            ClearForm();
+        }
+    }//GEN-LAST:event_DeleteMNUActionPerformed
 
     /**
      * @param args the command line arguments

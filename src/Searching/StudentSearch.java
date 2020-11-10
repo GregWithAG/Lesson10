@@ -9,10 +9,26 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 public class StudentSearch extends javax.swing.JFrame {
-    
+     ISSStudents iss[];
     public StudentSearch() {
         initComponents();
+        Scanner scan = new Scanner(System.in);
+        String name, add;
+        int id;
+       iss = new ISSStudents[100];
+        try {
+            scan = new Scanner(new File("src/Searching/studata.txt"));
         
+        
+            for (int i = 0; i < 100; i++) {
+                name = scan.nextLine();
+                add = scan.nextLine();
+                id = Integer.parseInt(scan.nextLine());
+                iss[i] = new ISSStudents(name,add,id);
+            }
+        } catch(IOException e){
+            System.out.println(e);
+        };
     }
     
     
@@ -116,25 +132,8 @@ public class StudentSearch extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnClearActionPerformed
 
     private void BtnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSearchActionPerformed
-        Scanner scan = new Scanner(System.in);
-        String name, add;
-        int id;
-        ISSStudents iss[] = new ISSStudents[100];
-        try {
-            scan = new Scanner(new File("src/Searching/studata.txt"));
         
-        
-            for (int i = 0; i < 100; i++) {
-                name = scan.nextLine();
-                add = scan.nextLine();
-                id = Integer.parseInt(scan.nextLine());
-                iss[i] = new ISSStudents(name,add,id);
-                System.out.println(iss[i].toString());
-            }
-        } catch(IOException e){
-            System.out.println(e);
-        };
-        id = Integer.parseInt(TXTID.getText());
+        int id = Integer.parseInt(TXTID.getText());
         ISSStudents temp = new ISSStudents(null,null,id);
         
         int result = search(iss,temp); //call search method here

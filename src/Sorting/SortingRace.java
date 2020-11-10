@@ -335,7 +335,7 @@ public class SortingRace extends javax.swing.JFrame {
         long end = 0;
         long elapsedTime = 0;
         start = System.currentTimeMillis();
-        quickSort(nums,nums[0],nums[49999]);
+        quickSort(nums,0,49999);
         end = System.currentTimeMillis();
         for (int i = 0; i < 50000; i++) {
             end = System.currentTimeMillis();
@@ -429,7 +429,6 @@ public static void insertionSort(int a[]){
 
 public void quickSort(int[] a, int left, int right){
     if(left >= right) return;
-    
     int i = left;
     int j = right;
     int pivotValue = a[(left + right) / 2];
@@ -441,7 +440,7 @@ public void quickSort(int[] a, int left, int right){
             a[i] = a[j];
             a[j] = temp;
             i++;
-            j++;
+            j--;
         }
     }
     quickSort(a,left,j);
